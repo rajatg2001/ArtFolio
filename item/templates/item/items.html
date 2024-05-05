@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Items{% endblock %}
+
+{% block content %}
+    <div class="pb-6 grid grid-cols-4 gap-4">
+        <div class="col-span-1">
+            <form method="get" action="{% url 'item:items' %}">
+                <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find a bike, a chair or car...">
+
+                <button class="mt-2 px-6 py-3 text-lg text-[#222222] font-semibold bg-[#E9E9E9] border border-[#222222] rounded-xl hover:bg-[#222222] hover:text-[#E9E9E9] transition-colors duration-500">Search</button>
+            </form>
+
+            <hr class="my-6">
+
+            <p class="font-semibold text-4xl text-center mb-4">Categories</p>
+
+            <ul>
+                {% for category in categories %}
+                    <li class="py-2 px-2 rounded-xl text-center text-xl uppercase m-2 bg-[#222222] text-white ml-2{% if category.id == category_id %} bg-gray-700 {% endif %}">
+                        <a href="{% url 'item:items' %}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <hr class="my-6">
+
+            <p class="font-semibold text-4xl text-center">Clear filters</p>
+
+            <ul>
+                <li><a href="{% url 'item:items' %}" class="mt-2 py-4 px-8 inline-block w-[5vw] bg-[#222222] ml-[40%] mt-4 flex justify-center items-center text-2xl rounded-xl text-white">Clear</a>
+        </div>
+
+        <div class="col-span-3">
+            <div class="grid grid-cols-3 gap-3">
+                {% for item in items %}
+                    <div>
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div class="relative">
+                                <img src="{{ item.image.url }}" class="rounded-t-xl">
+                                <span class="absolute bottom-[50%] right-[25%] text-[#fff] text-5xl font-semibold opacity-70 p-1">ArtFolio</span>
+                            </div>
+    
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{ item.name }}</h2>
+                                <p class="text-gray-500">Price: {{ item.price }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
